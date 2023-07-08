@@ -4,12 +4,11 @@ import net.yakclient.client.api.Extension
 import net.yakclient.client.api.ExtensionContext
 
 public class ExampleExtension : Extension() {
-    override fun init(context: ExtensionContext) {
-        println("Initing!!")
-        getSomething()
-    }
-
     override fun cleanup() {
         println("nothing")
+    }
+    override fun init() {
+        println("Initing!!")
+        getSomething()
     }
 }

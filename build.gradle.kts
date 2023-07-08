@@ -18,6 +18,7 @@ repositories {
         isAllowInsecureProtocol = true
         url = uri("http://maven.yakclient.net/snapshots")
     }
+
 }
 
 configurations.all {
@@ -29,6 +30,10 @@ dependencies {
 
 yakclient {
     model {
+        groupId = "net.yakclient.extensions"
+        name = "example-extension"
+        version = "1.0-SNAPSHOT"
+
         packagingType = "jar"
         extensionClass = "net.yakclient.extensions.example.ExampleExtension"
     }
