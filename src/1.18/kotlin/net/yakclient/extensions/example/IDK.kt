@@ -1,4 +1,4 @@
-package net.yakclient.example
+package net.yakclient.extensions.example
 
 import net.minecraft.server.Main
 

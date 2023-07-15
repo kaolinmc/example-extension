@@ -1,12 +1,13 @@
 package net.yakclient.extensions.example
 
+import net.yakclient.client.api.AFTER_BEGIN
 import net.yakclient.client.api.annotation.Mixin
 import net.yakclient.client.api.annotation.SourceInjection
 
 @Mixin("net.minecraft.client.main.Main")
 public abstract class FirstMixin {
     @SourceInjection(
-        point = "net.yakclient.components.yak.mixin.InjectionPoints\$AfterBegin",
+        point = AFTER_BEGIN,
         from = "net.yakclient.extensions.example.FirstMixin",
         to = "net.minecraft.client.main.Main",
         methodFrom = "injectIt()V",
