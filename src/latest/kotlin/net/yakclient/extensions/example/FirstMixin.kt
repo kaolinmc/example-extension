@@ -15,7 +15,7 @@ public abstract class FirstMixin {
         priority = 0
     )
     public fun injectIt() {
-        println("Testing??? Is this injected??")
+        println("INJECTED PLASE")
     }
 
 }
