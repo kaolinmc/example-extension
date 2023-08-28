@@ -1,6 +1,6 @@
 package net.yakclient.extensions.example
 
-public fun getSomething() {
+public fun registerBlocks() {
     println("THIS IS FROM THE 1.19.2 PARTITION!!")
 
 }

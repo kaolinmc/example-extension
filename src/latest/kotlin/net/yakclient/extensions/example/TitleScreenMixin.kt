@@ -5,26 +5,28 @@ import net.minecraft.client.gui.components.SplashRenderer
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.Component
 import net.minecraft.server.Bootstrap
-import net.yakclient.client.api.AFTER_BEGIN
-import net.yakclient.client.api.OVERWRITE
+import net.yakclient.client.api.BEFORE_END
 import net.yakclient.client.api.annotation.*
 
 @Mixin("net.minecraft.client.gui.screens.TitleScreen")
 abstract class TitleScreenMixin(ignored: Component) : Screen(ignored) {
     private var splash: SplashRenderer? = null
 
-//    @SourceInjection(
-//        point = BEFORE_END,
-//        from = "net.yakclient.extensions.example.TitleScreenMixin",
-//        to = "net.minecraft.client.gui.screens.TitleScreen",
-//        methodFrom = "initV1()V",
-//        methodTo = "init()V",
-//        priority = 0
-//    )
-//    fun initV1() {
-//        splash = SplashRenderer("Yakclient is awesome!")
-//        Bootstrap.realStdoutPrintln("Hey man")
-//    }
+    @SourceInjection(
+            point = BEFORE_END,
+            from = "net.yakclient.extensions.example.TitleScreenMixin",
+            to = "net.minecraft.client.gui.screens.TitleScreen",
+            methodFrom = "initV1()V",
+            methodTo = "init()V",
+            priority = 0
+    )
+    fun initV1() {
+        splash = SplashRenderer("Yakclient is awesome!")
+        Bootstrap.realStdoutPrintln("Hey man")
+        this.addRenderableWidget(
+                createTheWidget(width, height)
+        )
+    }
 
 //    @SourceInjection(
 //        point = AFTER_BEGIN,
@@ -44,4 +46,11 @@ abstract class TitleScreenMixin(ignored: Component) : Screen(ignored) {
 //        }
 ////        this.addRenderableWidget(button)
 //    }
+}
+
+fun createTheWidget(width: Int, height: Int): Button {
+    return Button.builder(Component.literal("Click this button for magic ;)")) {
+        Bootstrap.realStdoutPrintln("CLICKED!")
+    }.bounds(width / 2 - 100, height / 4 + 24, 200, 20)
+            .build()
 }

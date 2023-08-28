@@ -1,7 +1,6 @@
 package net.yakclient.extensions.example
 
 import net.yakclient.client.api.Extension
-import net.yakclient.client.api.ExtensionContext
 import java.io.PrintStream
 
 public class ExampleExtension : Extension() {
@@ -14,6 +13,6 @@ public class ExampleExtension : Extension() {
     }
     override fun init() {
         out.println("Initing!! more different")
-        getSomething()
+        registerBlocks()
     }
 }

@@ -18,7 +18,10 @@ repositories {
 
 
 tasks.named<JavaExec>("launch") {
-    jvmArgs("-XstartOnFirstThread")
+//   args(listOf(
+//            "-Dlog4j.configurationFile=/Users/durganmcbroom/IdeaProjects/yakclient/example-extension/build/launch/mc/1.20.1/logging.xml"
+//    )
+    jvmArgs("-XstartOnFirstThread", "-Xmx2G", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseG1GC", "-XX:G1NewSizePercent=20", "-XX:G1ReservePercent=20", "-XX:MaxGCPauseMillis=50", "-XX:G1HeapRegionSize=32M")
 }
 
 yakclient {
