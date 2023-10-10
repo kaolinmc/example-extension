@@ -10,10 +10,18 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         isAllowInsecureProtocol = true
         url = uri("http://maven.yakclient.net/snapshots")
     }
+}
+
+dependencies {
+    add( "kapt", "net.yakclient:yakclient-preprocessor:1.0-SNAPSHOT")
+    implementation("net.yakclient:client-api:1.0-SNAPSHOT")
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
 }
 
 
@@ -34,17 +42,29 @@ yakclient {
         extensionClass = "net.yakclient.extensions.example.ExampleExtension"
     }
 
-    partitions {
-        val main = create("main") {
-            dependencies {
-                add( "kapt", "net.yakclient:yakclient-preprocessor:1.0-SNAPSHOT")
+    tweakerPartition {
+        entrypoint.set("net.yakclient.extensions.example.tweaker.ExampleTweaker")
+        dependencies {
+            implementation("net.yakclient.components:ext-loader:1.0-SNAPSHOT")
+            implementation("net.yakclient:boot:1.0-SNAPSHOT")
+            implementation("net.yakclient:archives:1.1-SNAPSHOT")
+            implementation("com.durganmcbroom:jobs:1.0-SNAPSHOT")
+            implementation("com.durganmcbroom:artifact-resolver-simple-maven:1.0-SNAPSHOT")
+            implementation("com.durganmcbroom:artifact-resolver:1.0-SNAPSHOT")
 
-                implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
-            }
         }
+    }
 
+    partitions {
         create("latest") {
             dependencies {
+                implementation(tweakerPartition.sourceSet.output)
+                implementation("net.yakclient:archives:1.1-SNAPSHOT") {
+                    isChanging = true
+                }
+                compileOnly("net.yakclient:boot:1.0-SNAPSHOT")
+                implementation("net.yakclient:common-util:1.0-SNAPSHOT")
+
                 add("kaptLatest", "net.yakclient:yakclient-preprocessor:1.0-SNAPSHOT")
                 "annotationProcessor"("net.yakclient:yakclient-preprocessor:1.0-SNAPSHOT")
                 implementation(main)
@@ -58,7 +78,7 @@ yakclient {
 
         create("1.19.2") {
             dependencies {
-                minecraft("1.19.2")
+//                minecraft("1.19.2")
                 add( "kapt1.19.2", "net.yakclient:yakclient-preprocessor:1.0-SNAPSHOT")
 
                 implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
