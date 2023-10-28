@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.7.10"
 
+    id("maven-publish")
     id("net.yakclient") version "1.0.1"
     kotlin("kapt") version "1.8.10"
 }
@@ -10,7 +11,6 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-    mavenLocal()
     maven {
         isAllowInsecureProtocol = true
         url = uri("http://maven.yakclient.net/snapshots")
@@ -18,7 +18,8 @@ repositories {
 }
 
 dependencies {
-    add( "kapt", "net.yakclient:yakclient-preprocessor:1.0-SNAPSHOT")
+    implementation(yakclient.tweakerPartition.map { it.sourceSet.output })
+    add("kapt", "net.yakclient:yakclient-preprocessor:1.0-SNAPSHOT")
     implementation("net.yakclient:client-api:1.0-SNAPSHOT")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
@@ -29,7 +30,16 @@ tasks.named<JavaExec>("launch") {
 //   args(listOf(
 //            "-Dlog4j.configurationFile=/Users/durganmcbroom/IdeaProjects/yakclient/example-extension/build/launch/mc/1.20.1/logging.xml"
 //    )
-    jvmArgs("-XstartOnFirstThread", "-Xmx2G", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseG1GC", "-XX:G1NewSizePercent=20", "-XX:G1ReservePercent=20", "-XX:MaxGCPauseMillis=50", "-XX:G1HeapRegionSize=32M")
+    jvmArgs(
+        "-XstartOnFirstThread",
+        "-Xmx2G",
+        "-XX:+UnlockExperimentalVMOptions",
+        "-XX:+UseG1GC",
+        "-XX:G1NewSizePercent=20",
+        "-XX:G1ReservePercent=20",
+        "-XX:MaxGCPauseMillis=50",
+        "-XX:G1HeapRegionSize=32M"
+    )
 }
 
 yakclient {
@@ -51,14 +61,13 @@ yakclient {
             implementation("com.durganmcbroom:jobs:1.0-SNAPSHOT")
             implementation("com.durganmcbroom:artifact-resolver-simple-maven:1.0-SNAPSHOT")
             implementation("com.durganmcbroom:artifact-resolver:1.0-SNAPSHOT")
-
         }
     }
 
     partitions {
         create("latest") {
             dependencies {
-                implementation(tweakerPartition.sourceSet.output)
+                implementation(tweakerPartition.get().sourceSet.output)
                 implementation("net.yakclient:archives:1.1-SNAPSHOT") {
                     isChanging = true
                 }
@@ -78,8 +87,8 @@ yakclient {
 
         create("1.19.2") {
             dependencies {
-//                minecraft("1.19.2")
-                add( "kapt1.19.2", "net.yakclient:yakclient-preprocessor:1.0-SNAPSHOT")
+                minecraft("1.19.2")
+                add("kapt1.19.2", "net.yakclient:yakclient-preprocessor:1.0-SNAPSHOT")
 
                 implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
                 implementation("net.yakclient:client-api:1.0-SNAPSHOT")
@@ -88,9 +97,23 @@ yakclient {
             supportedVersions.addAll(listOf("1.18"))
         }
     }
+
+    extension("net.yakclient.extensions:resource-tweaker:1.0-SNAPSHOT")
 }
 
+publishing {
+    publications {
+        create<MavenPublication>("prod") {
+            artifact(tasks.jar)
+            artifact(tasks.generateErm) {
+                classifier = "erm"
+            }
 
+            groupId = "net.yakclient.extensions"
+            artifactId = "example-extension"
+        }
+    }
+}
 
 java {
     toolchain {
