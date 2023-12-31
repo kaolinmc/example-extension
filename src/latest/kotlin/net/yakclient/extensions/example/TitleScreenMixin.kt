@@ -14,9 +14,6 @@ abstract class TitleScreenMixin(ignored: Component) : Screen(ignored) {
 
     @SourceInjection(
             point = BEFORE_END,
-            from = "net.yakclient.extensions.example.TitleScreenMixin",
-            to = "net.minecraft.client.gui.screens.TitleScreen",
-            methodFrom = "initV1()V",
             methodTo = "init()V",
             priority = 0
     )

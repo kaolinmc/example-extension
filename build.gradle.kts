@@ -1,16 +1,21 @@
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "1.9.21"
 
     id("maven-publish")
-    id("net.yakclient") version "1.0.1"
-    kotlin("kapt") version "1.8.10"
+    id("net.yakclient") version "1.0.3"
+    kotlin("kapt") version "1.9.20"
 }
 
 group = "net.yakclient.extensions"
 version = "1.0-SNAPSHOT"
 
+tasks.wrapper {
+    gradleVersion = "8.6-rc-1"
+}
+
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         isAllowInsecureProtocol = true
         url = uri("http://maven.yakclient.net/snapshots")
@@ -26,10 +31,8 @@ dependencies {
 }
 
 
-tasks.named<JavaExec>("launch") {
-//   args(listOf(
-//            "-Dlog4j.configurationFile=/Users/durganmcbroom/IdeaProjects/yakclient/example-extension/build/launch/mc/1.20.1/logging.xml"
-//    )
+tasks.launch {
+    targetNamespace.set("mojang:deobfuscated")
     jvmArgs(
         "-XstartOnFirstThread",
         "-Xmx2G",
@@ -44,19 +47,19 @@ tasks.named<JavaExec>("launch") {
 
 yakclient {
     model {
-        groupId = "net.yakclient.extensions"
-        name = "example-extension"
-        version = "1.0-SNAPSHOT"
+        groupId.set("net.yakclient.extensions")
+        name.set("example-extension")
+        version .set("1.0-SNAPSHOT")
 
-        packagingType = "jar"
-        extensionClass = "net.yakclient.extensions.example.ExampleExtension"
+        packagingType.set("jar")
+        extensionClass.set("net.yakclient.extensions.example.ExampleExtension")
     }
 
     tweakerPartition {
         entrypoint.set("net.yakclient.extensions.example.tweaker.ExampleTweaker")
         dependencies {
             implementation("net.yakclient.components:ext-loader:1.0-SNAPSHOT")
-            implementation("net.yakclient:boot:1.0-SNAPSHOT")
+            implementation("net.yakclient:boot:1.1-SNAPSHOT")
             implementation("net.yakclient:archives:1.1-SNAPSHOT")
             implementation("com.durganmcbroom:jobs:1.0-SNAPSHOT")
             implementation("com.durganmcbroom:artifact-resolver-simple-maven:1.0-SNAPSHOT")
@@ -71,16 +74,16 @@ yakclient {
                 implementation("net.yakclient:archives:1.1-SNAPSHOT") {
                     isChanging = true
                 }
-                compileOnly("net.yakclient:boot:1.0-SNAPSHOT")
+                compileOnly("net.yakclient:boot:1.1-SNAPSHOT")
                 implementation("net.yakclient:common-util:1.0-SNAPSHOT")
 
-                add("kaptLatest", "net.yakclient:yakclient-preprocessor:1.0-SNAPSHOT")
-                "annotationProcessor"("net.yakclient:yakclient-preprocessor:1.0-SNAPSHOT")
                 implementation(main)
                 minecraft("1.20.1")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
                 implementation("net.yakclient:client-api:1.0-SNAPSHOT")
             }
+
+            mappingsType.set("mojang")
 
             supportedVersions.addAll(listOf("1.20.1", "1.19.2"))
         }
@@ -88,11 +91,11 @@ yakclient {
         create("1.19.2") {
             dependencies {
                 minecraft("1.19.2")
-                add("kapt1.19.2", "net.yakclient:yakclient-preprocessor:1.0-SNAPSHOT")
 
                 implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
                 implementation("net.yakclient:client-api:1.0-SNAPSHOT")
             }
+            mappingsType.set("mojang")
 
             supportedVersions.addAll(listOf("1.18"))
         }

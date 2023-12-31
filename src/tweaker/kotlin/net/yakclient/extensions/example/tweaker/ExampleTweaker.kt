@@ -10,8 +10,8 @@ class ExampleTweaker : EnvironmentTweaker {
         val extensionsToRegister : MutableList<ArchiveReference> = ArrayList()
     }
 
-    override fun tweak(environment: ExtLoaderEnvironment): ExtLoaderEnvironment {
-        return environment.observeNodes {
+    override fun tweak(environment: ExtLoaderEnvironment) {
+        environment.observeNodes {
             extensionsToRegister.add(it.archiveReference!!)
         }
     }

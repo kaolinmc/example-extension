@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "yakclient:block/example_block" }
+  }
+}

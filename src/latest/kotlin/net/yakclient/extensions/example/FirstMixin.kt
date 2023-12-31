@@ -1,6 +1,7 @@
 package net.yakclient.extensions.example
 
 import jdk.jfr.StackTrace
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.server.Bootstrap
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.Blocks
@@ -13,9 +14,6 @@ import java.util.function.Supplier
 public abstract class FirstMixin {
     @SourceInjection(
         point = AFTER_BEGIN,
-        from = "net.yakclient.extensions.example.FirstMixin",
-        to = "net.minecraft.client.main.Main",
-        methodFrom = "injectIt()V",
         methodTo = "main([Ljava/lang/String;)V",
         priority = 0
     )
@@ -23,8 +21,6 @@ public abstract class FirstMixin {
         println("Hey, me me me")
         Bootstrap.realStdoutPrintln("Hey, This got injected")
     }
-
-
 }
 
 fun callThis() {

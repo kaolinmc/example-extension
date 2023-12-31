@@ -9,7 +9,16 @@ public class ExampleExtension : Extension() {
     }
 
     override fun init() {
-        testPathPack()
         println("Ok inniting here")
+        onBootStrap {
+            Thread {
+                Thread.sleep(5000)
+                try {
+                    attemptRegister()
+                }catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }.start()
+        }
     }
 }
