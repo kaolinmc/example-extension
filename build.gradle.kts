@@ -1,13 +1,20 @@
+import dev.extframework.gradle.common.archives
+import dev.extframework.gradle.common.commonUtil
+import dev.extframework.gradle.common.coreApi
+import dev.extframework.gradle.deobf.MinecraftMappings
+import dev.extframework.gradle.extframework
+import dev.extframework.gradle.publish.ExtensionPublication
+
 plugins {
     kotlin("jvm") version "1.9.21"
 
     id("maven-publish")
-    id("net.yakclient") version "1.0.3"
-    kotlin("kapt") version "1.9.20"
+    id("dev.extframework.mc") version "1.2.8"
+    id("dev.extframework.common") version "1.0.17"
 }
 
-group = "net.yakclient.extensions"
-version = "1.0-SNAPSHOT"
+group = "dev.extframework.extension"
+version = "1.0-BETA"
 
 tasks.wrapper {
     gradleVersion = "8.6-rc-1"
@@ -15,23 +22,23 @@ tasks.wrapper {
 
 repositories {
     mavenCentral()
-    mavenLocal()
+    extframework()
     maven {
-        isAllowInsecureProtocol = true
-        url = uri("http://maven.yakclient.net/snapshots")
+        url = uri("https://cursemaven.com")
+    }
+    maven {
+        url = uri("https://repo.extframework.dev/registry")
     }
 }
 
 dependencies {
-    implementation(yakclient.tweakerPartition.map { it.sourceSet.output })
-    add("kapt", "net.yakclient:yakclient-preprocessor:1.0-SNAPSHOT")
-    implementation("net.yakclient:client-api:1.0-SNAPSHOT")
+    coreApi()
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
 }
 
-
 tasks.launch {
+    javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
     targetNamespace.set("mojang:deobfuscated")
     jvmArgs(
         "-XstartOnFirstThread",
@@ -43,83 +50,85 @@ tasks.launch {
         "-XX:MaxGCPauseMillis=50",
         "-XX:G1HeapRegionSize=32M"
     )
+    mcVersion.set("1.21")
 }
 
-yakclient {
+extension {
     model {
-        groupId.set("net.yakclient.extensions")
-        name.set("example-extension")
-        version .set("1.0-SNAPSHOT")
-
-        packagingType.set("jar")
-        extensionClass.set("net.yakclient.extensions.example.ExampleExtension")
+//        groupId.set("dev.extframework.extension")
+        name = "example-extension"
+//        version.set("1.0-BETA")
     }
 
-    tweakerPartition {
-        entrypoint.set("net.yakclient.extensions.example.tweaker.ExampleTweaker")
-        dependencies {
-            implementation("net.yakclient.components:ext-loader:1.0-SNAPSHOT")
-            implementation("net.yakclient:boot:1.1-SNAPSHOT")
-            implementation("net.yakclient:archives:1.1-SNAPSHOT")
-            implementation("com.durganmcbroom:jobs:1.0-SNAPSHOT")
-            implementation("com.durganmcbroom:artifact-resolver-simple-maven:1.0-SNAPSHOT")
-            implementation("com.durganmcbroom:artifact-resolver:1.0-SNAPSHOT")
-        }
+    extensions {
+//        fabricMod(
+//            name = "fabric-api",
+//            projectId = "306612",
+//            fileId = "5105683"
+//        )
+    }
+
+    metadata {
+        name = "Example Extension"
+        developers.add("Durgan McBroom")
+        description.set("An example extension to test the limits of extframework")
     }
 
     partitions {
-        create("latest") {
+        main {
+            extensionClass = "dev.extframework.extensions.example.ExampleExtension"
             dependencies {
-                implementation(tweakerPartition.get().sourceSet.output)
-                implementation("net.yakclient:archives:1.1-SNAPSHOT") {
-                    isChanging = true
-                }
-                compileOnly("net.yakclient:boot:1.1-SNAPSHOT")
-                implementation("net.yakclient:common-util:1.0-SNAPSHOT")
-
-                implementation(main)
-                minecraft("1.20.1")
                 implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
-                implementation("net.yakclient:client-api:1.0-SNAPSHOT")
             }
+        }
+        version("latest") {
+            dependencies {
+                archives()
+                commonUtil()
 
-            mappingsType.set("mojang")
+                minecraft("1.21")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
+                coreApi()
+            }
+            mappings = MinecraftMappings.mojang
 
-            supportedVersions.addAll(listOf("1.20.1", "1.19.2"))
+            supportVersions("1.21")
         }
 
-        create("1.19.2") {
+        version("1.19.2") {
+            mappings = MinecraftMappings.mojang
             dependencies {
                 minecraft("1.19.2")
-
                 implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
-                implementation("net.yakclient:client-api:1.0-SNAPSHOT")
+                coreApi()
             }
-            mappingsType.set("mojang")
 
-            supportedVersions.addAll(listOf("1.18"))
+            supportVersions("1.18", "1.19.2")
         }
     }
-
-    extension("net.yakclient.extensions:resource-tweaker:1.0-SNAPSHOT")
 }
 
 publishing {
     publications {
-        create<MavenPublication>("prod") {
-            artifact(tasks.jar)
-            artifact(tasks.generateErm) {
-                classifier = "erm"
+        create<ExtensionPublication>("prod")
+    }
+    repositories {
+        maven {
+            url = uri("https://repo.extframework.dev")
+            credentials {
+                password = property("maven.auth.token") as String
             }
-
-            groupId = "net.yakclient.extensions"
-            artifactId = "example-extension"
         }
     }
 }
 
+
+kotlin {
+    jvmToolchain(21)
+}
+
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }

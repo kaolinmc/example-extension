@@ -1,4 +1,4 @@
-package net.yakclient.extensions.example
+package dev.extframework.extensions.example
 
 val bootstrapCallbacks = ArrayList<() -> Unit>()
 fun onBootStrap(callback: () -> Unit) {

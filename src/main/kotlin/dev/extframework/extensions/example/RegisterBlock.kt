@@ -1,4 +1,5 @@
-package net.yakclient.extensions.example
+package dev.extframework.extensions.example
+
 
 fun attemptRegister() {
     throw UnsupportedOperationException("")
