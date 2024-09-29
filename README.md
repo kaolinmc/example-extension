@@ -16,7 +16,7 @@ to create your own extensions!
 
 #### Prerequisites
 You need the following on your machine.  Standard gradle development stuff for java:
-- *at least* Java 17 (JDK) installed and JAVA_HOME set to the jdk directory
+- *at least* Java 21 (JDK) installed and JAVA_HOME set to the jdk directory
 - gradle
 - git
 
@@ -39,10 +39,8 @@ one of five main strengths of the Yak system.
 Any version partition can call code in the src/main partition but main cannot see anything in the version partitions. 
 Also, again, note that we've restricted any MC-code from the main to insure good design and reduce code-version fragility.
 
-At the simplest, you can develop JUST in a partition directory, nothing in src/main and make an extension that works for 
-only a specific set of MC versions.  
-
-
+At the simplest, you can develop almost everything in the version partition, the only thing necessary in src/main 
+is the Extension classand.
 
 
 ##### Minecraft version mapping
@@ -113,7 +111,7 @@ using the correct classes for the version you're targeting!
  
 ### Mixins
 In general, mixins are any time code is "mixed into" other code.  And if you've done MC dev you're familiar with these.
-You need to tell *where* you want to put the code (at the beginning of the function?  At some point you searched for
+You need to tell *where* you want to put the code (at the beginning of the function  At some point you searched for
 within the function, etc)
 
 Here's a great example, which adds some text to the launcher main screen!  the @Mixin(<class>) annotation tells you which
@@ -137,16 +135,21 @@ private var splash: SplashRenderer? = null
     }
 }
 ```
-The most important annotation after @Mixin is the @SourceInjection, which tells you *where* you're putting the code.
-The options for this are:
-
-DURGAN!!!
+The most important annotation after @Mixin is the @SourceInjection (Or field or method injection), which tells you *where* you're putting the code.
+There are three types of mixins supported, SourceInjection: which adds to an existing function, 
+MethodInjection: which replaces an existing function and FieldInjection: adds a new field to a class.  More documentation 
+all the possible values for these is provided in the ExtensionLoader project.
 
 <!-- tweaker --> 
 
+## Documentation
+Further documention can be found at:
+
+* Mixins in the Extension Loader project [https://github.com/extframework/ext-loader](https://github.com/extframework/ext-loader)
+* Gradle plugin options [https://github.com/extframework/extframework-gradle-plugin](https://github.com/extframework/extframework-gradle-plugin)
 
 <!-- CREDITS -->
-<h2 id="credits"> Credits</h2>
+## Credits
 
 Durgan McBroom
 
