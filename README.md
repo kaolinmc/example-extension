@@ -40,7 +40,7 @@ Any version partition can call code in the src/main partition but main cannot se
 Also, again, note that we've restricted any MC-code from the main to insure good design and reduce code-version fragility.
 
 At the simplest, you can develop almost everything in the version partition, the only thing necessary in src/main 
-is the Extension classand.
+is the Extension class.
 
 
 ##### Minecraft version mapping
@@ -111,8 +111,7 @@ using the correct classes for the version you're targeting!
  
 ### Mixins
 In general, mixins are any time code is "mixed into" other code.  And if you've done MC dev you're familiar with these.
-You need to tell *where* you want to put the code (at the beginning of the function  At some point you searched for
-within the function, etc)
+You need to tell *where* you want to put the code (at the beginning of the function, at the end, etc.)
 
 Here's a great example, which adds some text to the launcher main screen!  the @Mixin(<class>) annotation tells you which
 MC class you're targeting.  This allows you to go crazy on the MC source!  
@@ -135,7 +134,10 @@ private var splash: SplashRenderer? = null
     }
 }
 ```
-The most important annotation after @Mixin is the @SourceInjection (Or field or method injection), which tells you *where* you're putting the code.
+The most important annotation after @Mixin is the @SourceInjection, which tells you *where* you're putting the code.
+Specifically @SourceInjection denotes where the given instructions are going in the target method in the target class. 
+With point you can define what part of the method this targets.
+
 There are three types of mixins supported, SourceInjection: which adds to an existing function, 
 MethodInjection: which replaces an existing function and FieldInjection: adds a new field to a class.  More documentation 
 all the possible values for these is provided in the ExtensionLoader project.
