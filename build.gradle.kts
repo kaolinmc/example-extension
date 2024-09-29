@@ -116,7 +116,7 @@ publishing {
         maven {
             url = uri("https://repo.extframework.dev")
             credentials {
-                password = property("maven.auth.token") as String
+//                password = property("maven.auth.token") as String
             }
         }
     }
