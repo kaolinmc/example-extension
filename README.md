@@ -149,6 +149,14 @@ Further documention can be found at:
 * Mixins in the Extension Loader project [https://github.com/extframework/ext-loader](https://github.com/extframework/ext-loader)
 * Gradle plugin options [https://github.com/extframework/extframework-gradle-plugin](https://github.com/extframework/extframework-gradle-plugin)
 
+### Contact 
+
+<ul>
+  <li> Discord: @durganmcbroom  or  <a href="https://discord.gg/3fP4N27JPH">@extframework discord</a></li>
+  <li> Linkedin: https://www.linkedin.com/in/durganmcbroom/ </li> 
+  <li> Email: durganmcbroom@gmail.com </li>
+</ul>
+
 <!-- CREDITS -->
 ## Credits
 
