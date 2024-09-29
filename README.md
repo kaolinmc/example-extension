@@ -3,7 +3,6 @@
 [![Top Language](https://img.shields.io/github/languages/top/extframework/example-extension)](https://github.com/extframework/example-extension)
 [![Last Commit](https://img.shields.io/github/last-commit/extframework/example-extension)](https://github.com/extframework/example-extension)
 [![Issues Open](https://img.shields.io/github/issues/extframework/example-extension)](https://github.com/extframework/example-extension)
-[![Issues Open](https://img.shields.io/github/issues/extframework/example-extension)](https://github.com/extframework/example-extension)
 
 [![Supported ](https://img.shields.io/badge/Mac-Supported-Green)](https://github.com/extframework/example-extension)
 [![Supported ](https://img.shields.io/badge/Windows-BUG-ff0000)](https://github.com/extframework/example-extension)
