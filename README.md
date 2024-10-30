@@ -1,12 +1,9 @@
 ## Welcome to the ExtensionFramework Example 
-[![Latest Stable Version](https://img.shields.io/github/v/release/extframework/example-extension?include_prereleases)](https://github.com/extframework/example-extension)
 [![Top Language](https://img.shields.io/github/languages/top/extframework/example-extension)](https://github.com/extframework/example-extension)
-[![Last Commit](https://img.shields.io/github/last-commit/extframework/example-extension)](https://github.com/extframework/example-extension)
-[![Issues Open](https://img.shields.io/github/issues/extframework/example-extension)](https://github.com/extframework/example-extension)
 [![Issues Open](https://img.shields.io/github/issues/extframework/example-extension)](https://github.com/extframework/example-extension)
 
 [![Supported ](https://img.shields.io/badge/Mac-Supported-Green)](https://github.com/extframework/example-extension)
-[![Supported ](https://img.shields.io/badge/Windows-BUG-ff0000)](https://github.com/extframework/example-extension)
+[![Supported ](https://img.shields.io/badge/Windows-Supported-Green)](https://github.com/extframework/example-extension)
 [![Supported ](https://img.shields.io/badge/Linux-Unknown-aaaaaa)](https://github.com/extframework/example-extension)
 
 This example will get you up and running a simple extension in Minecraft! Then, show you where and how to use the system
