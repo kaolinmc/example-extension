@@ -68,7 +68,7 @@ publishing {
         maven {
             url = uri("https://repo.kaolinmc.com")
             credentials {
-                password = property("maven.auth.token") as String
+//                password = property("maven.auth.token") as String
             }
         }
     }
