@@ -2,13 +2,13 @@ rootProject.name = "example-extension"
 
 pluginManagement {
     repositories {
-        mavenLocal()
         maven {
-            url = uri("https://maven.extframework.dev/snapshots")
+            url = uri("https://maven.kaolinmc.com/snapshots")
         }
         maven {
-            url = uri("https://maven.extframework.dev/releases")
+            url = uri("https://maven.kaolinmc.com/releases")
         }
         gradlePluginPortal()
     }
 }
+

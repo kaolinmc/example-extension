@@ -1,0 +1,2 @@
+[parents]
+mdk = { group = "com.kaolinmc", version = "1.0.1-BETA", use = "central" }

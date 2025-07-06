@@ -1,20 +1,20 @@
-import dev.extframework.gradle.common.archives
-import dev.extframework.gradle.common.commonUtil
-import dev.extframework.gradle.common.coreApi
-import dev.extframework.gradle.deobf.MinecraftMappings
-import dev.extframework.gradle.extframework
-import dev.extframework.gradle.publish.ExtensionPublication
+import com.kaolinmc.core.main.main
+import com.kaolinmc.gradle.common.*
+import com.kaolinmc.kiln.publish.ExtensionPublication
+import com.kaolinmc.minecraft.MojangNamespaces
+import com.kaolinmc.minecraft.minecraft
+import com.kaolinmc.minecraft.task.LaunchMinecraft
 
 plugins {
-    kotlin("jvm") version "1.9.21"
+    kotlin("jvm") version "2.1.0"
 
     id("maven-publish")
-    id("dev.extframework.mc") version "1.2.8"
-    id("dev.extframework.common") version "1.0.17"
+    id("kaolin.kiln") version "0.1"
+    id("com.kaolinmc.common") version "0.1"
 }
 
-group = "dev.extframework.extension"
-version = "1.0-BETA"
+group = "com.kaolinmc.extension"
+version = "1.0.3-BETA"
 
 tasks.wrapper {
     gradleVersion = "8.6-rc-1"
@@ -22,88 +22,40 @@ tasks.wrapper {
 
 repositories {
     mavenCentral()
-    extframework()
-    maven {
-        url = uri("https://cursemaven.com")
-    }
-    maven {
-        url = uri("https://repo.extframework.dev/registry")
-    }
+    kaolin()
 }
 
-dependencies {
-    coreApi()
-
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
+val launch1_21_4 by tasks.registering(LaunchMinecraft::class) {
+    dependsOn(tasks.named("publishToMavenLocal"))
+    targetNamespace = MojangNamespaces.deobfuscated.identifier
+    javaLauncher.set(javaToolchains.launcherFor {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    })
+    mcVersion = "1.21.4"
 }
 
-tasks.launch {
-    javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
-    targetNamespace.set("mojang:deobfuscated")
-    jvmArgs(
-        "-XstartOnFirstThread",
-        "-Xmx2G",
-        "-XX:+UnlockExperimentalVMOptions",
-        "-XX:+UseG1GC",
-        "-XX:G1NewSizePercent=20",
-        "-XX:G1ReservePercent=20",
-        "-XX:MaxGCPauseMillis=50",
-        "-XX:G1HeapRegionSize=32M"
-    )
-    mcVersion.set("1.21")
-}
 
 extension {
-    model {
-//        groupId.set("dev.extframework.extension")
-        name = "example-extension"
-//        version.set("1.0-BETA")
-    }
-
-    extensions {
-//        fabricMod(
-//            name = "fabric-api",
-//            projectId = "306612",
-//            fileId = "5105683"
-//        )
-    }
-
     metadata {
         name = "Example Extension"
         developers.add("Durgan McBroom")
-        description.set("An example extension to test the limits of extframework")
+        description.set("An example extension to test the limits of Kaolin")
     }
 
     partitions {
         main {
-            extensionClass = "dev.extframework.extensions.example.ExampleExtension"
+            extensionClass = "com.kaolinmc.extensions.example.ExampleExtension"
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
             }
         }
-        version("latest") {
+        minecraft("latest") {
+            entrypoint = "com.kaolinmc.extensions.example.Initializer"
             dependencies {
-                archives()
-                commonUtil()
-
-                minecraft("1.21")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
-                coreApi()
+                minecraft("1.21.4")
             }
-            mappings = MinecraftMappings.mojang
+            mappings = MojangNamespaces.deobfuscated
 
-            supportVersions("1.21")
-        }
-
-        version("1.19.2") {
-            mappings = MinecraftMappings.mojang
-            dependencies {
-                minecraft("1.19.2")
-                implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.10")
-                coreApi()
-            }
-
-            supportVersions("1.18", "1.19.2")
+            supportVersions("1.21", "1.21.1", "1.21.4")
         }
     }
 }
@@ -114,7 +66,7 @@ publishing {
     }
     repositories {
         maven {
-            url = uri("https://repo.extframework.dev")
+            url = uri("https://repo.kaolinmc.com")
             credentials {
                 password = property("maven.auth.token") as String
             }
@@ -122,13 +74,6 @@ publishing {
     }
 }
 
-
 kotlin {
-    jvmToolchain(21)
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
-    }
+    jvmToolchain(8)
 }
