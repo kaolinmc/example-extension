@@ -9,6 +9,6 @@ pluginManagement {
             url = uri("https://maven.kaolinmc.com/releases")
         }
         gradlePluginPortal()
+        mavenLocal()
     }
 }
-

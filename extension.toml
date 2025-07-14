@@ -1,2 +1,5 @@
+[repositories]
+
 [parents]
-mdk = { group = "com.kaolinmc", version = "1.0.1-BETA", use = "central" }
+mdk = { group = "com.kaolinmc", version = "1.0.2-BETA" }
+minecraft = {group = "com.kaolinmc.core", version = "1.0.8-BETA"}

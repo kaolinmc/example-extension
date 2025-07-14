@@ -1,5 +1,5 @@
 import com.kaolinmc.core.main.main
-import com.kaolinmc.gradle.common.*
+import com.kaolinmc.gradle.common.kaolin
 import com.kaolinmc.kiln.publish.ExtensionPublication
 import com.kaolinmc.minecraft.MojangNamespaces
 import com.kaolinmc.minecraft.minecraft
@@ -9,8 +9,8 @@ plugins {
     kotlin("jvm") version "2.1.0"
 
     id("maven-publish")
-    id("kaolin.kiln") version "0.1"
-    id("com.kaolinmc.common") version "0.1"
+    id("kaolin.kiln") version "0.1.5"
+    id("com.kaolinmc.common") version "0.1.5"
 }
 
 group = "com.kaolinmc.extension"
