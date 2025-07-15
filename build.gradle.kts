@@ -9,8 +9,8 @@ plugins {
     kotlin("jvm") version "2.1.0"
 
     id("maven-publish")
-    id("kaolin.kiln") version "0.1.5"
-    id("com.kaolinmc.common") version "0.1.5"
+    id("kaolin.kiln") version "0.1.6"
+    id("com.kaolinmc.common") version "0.1.6"
 }
 
 group = "com.kaolinmc.extension"
